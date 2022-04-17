@@ -7,7 +7,7 @@ data class Gossips(val minuteOfDay: MinuteOfDay = MinuteOfDay.startOfDay(), val 
     private val allDriverIds: Set<DriverId> by lazy { drivers.map { it.id }.toSet() }
 
     private val driverPositions: Map<DriverId, BusStopId> by lazy {
-        drivers.associate { it.id to it.route.busStopAt(minuteOfDay) }
+        drivers.associate { it.id to it.route.busStopAt(it.currentIndexInRoute) }
     }
 
     private val driversPerBusStop: Map<BusStopId, List<Driver>> by lazy {

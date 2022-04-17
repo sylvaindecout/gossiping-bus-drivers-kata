@@ -35,7 +35,7 @@ class GossipsTest {
     }
 
     @Test
-    fun `should stop incrementing at the end of the day`() {
+    fun `should stop time at the end of the day`() {
         val gossips = Gossips(endOfDay(), setOf(
             Driver(id = DriverId(1), route = Route(1, 2), knownGossips = setOf(DriverId(1), DriverId(2))),
             Driver(id = DriverId(2), route = Route(3, 2), knownGossips = setOf(DriverId(1)))
@@ -47,18 +47,30 @@ class GossipsTest {
     }
 
     @Test
-    fun `should add new gossips when incrementing minute of the day`() {
+    fun `should increment minute of the day when time passes`() {
         val gossips = Gossips(MinuteOfDay(9), setOf(
-            Driver(id = DriverId(1), route = Route(1, 2), knownGossips = setOf(DriverId(1), DriverId(2))),
-            Driver(id = DriverId(2), route = Route(3, 2), knownGossips = setOf(DriverId(1)))
+            Driver(id = DriverId(1), route = Route(1, 2), currentIndexInRoute = 1, knownGossips = setOf(DriverId(1), DriverId(2))),
+            Driver(id = DriverId(2), route = Route(3, 2), currentIndexInRoute = 1, knownGossips = setOf(DriverId(1)))
         ))
 
         val next = gossips.next()
 
-        expectThat(next).isEqualTo(Gossips(MinuteOfDay(10), setOf(
-            Driver(id = DriverId(1), route = Route(1, 2), knownGossips = setOf(DriverId(1), DriverId(2))),
-            Driver(id = DriverId(2), route = Route(3, 2), knownGossips = setOf(DriverId(1), DriverId(2)))
-        )))
+        expectThat(next?.minuteOfDay).isEqualTo(MinuteOfDay(10))
+    }
+
+    @Test
+    fun `should add new gossips when time passes`() {
+        val gossips = Gossips(MinuteOfDay(9), setOf(
+            Driver(id = DriverId(1), route = Route(1, 2), currentIndexInRoute = 1, knownGossips = setOf(DriverId(1), DriverId(2))),
+            Driver(id = DriverId(2), route = Route(3, 2), currentIndexInRoute = 1, knownGossips = setOf(DriverId(1)))
+        ))
+
+        val next = gossips.next()
+
+        expectThat(next?.drivers).isEqualTo(setOf(
+            Driver(id = DriverId(1), route = Route(1, 2), currentIndexInRoute = 0, knownGossips = setOf(DriverId(1), DriverId(2))),
+            Driver(id = DriverId(2), route = Route(3, 2), currentIndexInRoute = 0, knownGossips = setOf(DriverId(1), DriverId(2)))
+        ))
     }
 
 }

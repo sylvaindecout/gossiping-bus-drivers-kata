@@ -7,8 +7,8 @@ data class Route(val busStops: List<BusStopId>) {
 
     constructor(vararg busStops: Int) : this(busStops.map { BusStopId(it) })
 
-    private val length: Int by lazy { busStops.size }
+    val length: Int by lazy { busStops.size }
 
-    fun busStopAt(minuteOfDay: MinuteOfDay): BusStopId = busStops[minuteOfDay.value % length]
+    fun busStopAt(index: Int): BusStopId = busStops[index]
 
 }
