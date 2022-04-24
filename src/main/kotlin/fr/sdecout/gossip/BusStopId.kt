@@ -2,8 +2,9 @@ package fr.sdecout.gossip
 
 import fr.sdecout.annotations.DomainDrivenDesign
 
+@JvmInline
 @DomainDrivenDesign.ValueObject
-data class BusStopId(val value: Int) {
+value class BusStopId(private val value: Int) {
 
     override fun toString(): String = "Stop #$value"
 

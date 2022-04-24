@@ -2,8 +2,9 @@ package fr.sdecout.gossip
 
 import fr.sdecout.annotations.DomainDrivenDesign
 
+@JvmInline
 @DomainDrivenDesign.ValueObject
-data class DriverId(val value: Int) {
+value class DriverId(private val value: Int) {
 
     override fun toString(): String = "Driver #$value"
 
