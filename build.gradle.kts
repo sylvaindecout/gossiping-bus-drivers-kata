@@ -13,7 +13,7 @@ group = "fr.sdecout.gossip"
 version = "1.0.0"
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url = uri("https://maven.pkg.github.com/sylvaindecout/documentation-annotations")
         credentials {
